@@ -1,1 +1,1 @@
-# (Y)et (a)nother (n)umeric (l)ibrary
+# YANL - Yet another numeric library
