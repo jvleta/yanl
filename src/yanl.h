@@ -1,5 +1,9 @@
 #pragma once
 
+#include <algorithm>
+#include <ostream>
+#include <vector>
+
 namespace yanl {
 
 template <typename T> class Vector {
@@ -22,6 +26,16 @@ public:
     vec.data.resize(size, 1);
     return vec;
   };
+
+  friend std::ostream &operator<<(std::ostream &os, const Vector<T> &vec) {
+    os << "[ ";
+    std::for_each(vec.data.begin(), vec.data.end(), [&](auto element) {
+      os << element;
+      os << " ";
+    });
+    os << "]\n";
+    return os;
+  }
 };
 
 } // namespace yanl
