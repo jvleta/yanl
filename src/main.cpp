@@ -3,6 +3,6 @@
 #include "yanl.h"
 
 int main(){
-    auto x = yanl::Vector<double>::zeros(3);
-    std::cout << x;
+    auto x = yanl::zeros<double>(3);
+    std::cout << *x;
 }
