@@ -13,7 +13,7 @@ private:
   Vector() = default;
 
 public:
-  std::vector<T> get() { return data; }
+  const std::vector<T> get() { return data; }
 
   static Vector<T> zeros(int size) {
     auto vec = Vector<T>();
