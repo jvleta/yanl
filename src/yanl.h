@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <memory>
 #include <ostream>
+#include <ranges>
 #include <vector>
 
 namespace yanl {
@@ -17,7 +18,26 @@ public:
     size_ = size;
     data.resize(size, value);
   }
+  int size() { return size_; }
   const std::vector<T> get() { return data; }
+
+  friend Vector<T> operator+(Vector<T> &a, Vector<T> &b) {
+    int size = a.size();
+    auto indices = std::ranges::iota_view{0, size};
+    auto c = Vector<T>(size, 0);
+    std::for_each(indices.begin(), indices.end(),
+                  [&a, &b, &c](int i) { c(i) = a(i) + b(i); });
+    return c;
+  }
+
+  friend Vector<T> operator-(Vector<T> &a, Vector<T> &b) {
+    int size = a.size();
+    auto indices = std::ranges::iota_view{0, size};
+    auto c = Vector<T>(size, 0);
+    std::for_each(indices.begin(), indices.end(),
+                  [&a, &b, &c](int i) { c(i) = a(i) - b(i); });
+    return c;
+  }
 
   T &operator()(const int index) { return data[index]; }
 
@@ -32,8 +52,19 @@ public:
     os << "]\n";
     return os;
   }
+
+  T dot(Vector<T> vec2) {
+    T result = 0;
+    for (int i = 0; size_; ++i) {
+      result += data[i] * vec2(i);
+    }
+    return result;
+  }
 };
 
+template <typename T> T dot(Vector<T> vec1, Vector<T> vec2) {
+  return vec1.dot(vec2);
+}
 template <typename T> class Matrix : public Vector<T> {
 private:
   int num_rows_ = 0;
@@ -54,7 +85,7 @@ public:
     Vector<T>::data.resize(Vector<T>::size_, value);
   }
 
-// element access (row major indexation)
+  // element access (row major indexation)
   T &operator()(const int row, const int column) {
     return Vector<T>::data[num_cols_ * row + column];
   }
@@ -75,26 +106,17 @@ public:
   }
 };
 
-template <typename T> std::unique_ptr<Vector<T>> zeros(int size) {
-  auto vec = std::make_unique<Vector<T>>(size, 0);
-  return vec;
+template <typename T> Vector<T> zeros(int size) { return Vector<T>(size, 0); }
+
+template <typename T> Matrix<T> zeros(int num_rows, int num_cols) {
+  return Matrix<T>(num_rows, num_cols, 0);
 }
 
-template <typename T>
-std::unique_ptr<Matrix<T>> zeros(int num_rows, int num_cols) {
-  auto matrix = std::make_unique<Matrix<T>>(num_rows, num_cols, 0);
-  return matrix;
-}
-
-template <typename T> std::unique_ptr<Vector<T>> ones(int size) {
-  auto vec = std::make_unique<Vector<T>>(size, 1);
-  return vec;
-}
+template <typename T> Vector<T> ones(int size) { return Vector<T>(size, 1); }
 
 template <typename T>
 std::unique_ptr<Matrix<T>> ones(int num_rows, int num_cols) {
-  auto matrix = std::make_unique<Matrix<T>>(num_rows, num_cols, 1);
-  return matrix;
+  return Matrix<T>(num_rows, num_cols, 1);
 }
 
 } // namespace yanl

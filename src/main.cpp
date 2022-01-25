@@ -4,5 +4,5 @@
 
 int main(){
     auto x = yanl::zeros<double>(3, 3);
-    std::cout << *x;
+    std::cout << x;
 }
