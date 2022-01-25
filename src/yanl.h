@@ -52,18 +52,15 @@ public:
     os << "]\n";
     return os;
   }
-
-  T dot(Vector<T> vec2) {
-    T result = 0;
-    for (int i = 0; size_; ++i) {
-      result += data[i] * vec2(i);
-    }
-    return result;
-  }
 };
 
 template <typename T> T dot(Vector<T> vec1, Vector<T> vec2) {
-  return vec1.dot(vec2);
+  T result = 0;
+  int n = vec1.size();
+  for (int i = 0; n; ++i) {
+    result += vec1(i) * vec2(i);
+  }
+  return result;
 }
 template <typename T> class Matrix : public Vector<T> {
 private:
