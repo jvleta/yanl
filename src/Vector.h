@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <ostream>
-#include <ranges>
 #include <vector>
 
 namespace yanl {
@@ -18,24 +17,25 @@ public:
     size_ = size;
     data.resize(size, value);
   }
+  void set_data(std::vector<T> data) { this->data = data; }
   int size() { return size_; }
   const std::vector<T> get() { return data; }
 
   friend Vector<T> operator+(Vector<T> &a, Vector<T> &b) {
     int size = a.size();
-    auto indices = std::ranges::iota_view{0, size};
     auto c = Vector<T>(size, 0);
-    std::for_each(indices.begin(), indices.end(),
-                  [&a, &b, &c](int i) { c(i) = a(i) + b(i); });
+    for (int i = 0; i < size; ++i) {
+      c(i) = a(i) + b(i);
+    }
     return c;
   }
 
   friend Vector<T> operator-(Vector<T> &a, Vector<T> &b) {
     int size = a.size();
-    auto indices = std::ranges::iota_view{0, size};
     auto c = Vector<T>(size, 0);
-    std::for_each(indices.begin(), indices.end(),
-                  [&a, &b, &c](int i) { c(i) = a(i) - b(i); });
+    for (int i = 0; i < size; ++i) {
+      c(i) = a(i) - b(i);
+    }
     return c;
   }
 
@@ -57,7 +57,7 @@ public:
 template <typename T> T dot(Vector<T> vec1, Vector<T> vec2) {
   T result = 0;
   int n = vec1.size();
-  for (int i = 0; n; ++i) {
+  for (int i = 0; i < n; ++i) {
     result += vec1(i) * vec2(i);
   }
   return result;
@@ -67,5 +67,13 @@ template <typename T> Vector<T> zeros(int size) { return Vector<T>(size, 0); }
 
 template <typename T> Vector<T> ones(int size) { return Vector<T>(size, 1); }
 
+template <typename T> Vector<T> linspace(T xmin, T xmax, int size) {
+  auto x = Vector<T>(size, 0);
+  T dx = (xmax - xmin) / (size - 1);
+  for (int i = 0; i < size; ++i) {
+    x(i) = xmin + i * dx;
+  }
+  return x;
+}
 
 } // namespace yanl
