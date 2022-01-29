@@ -104,4 +104,63 @@ template <typename T> matrix<T> eye(int num_rows) {
   return mat;
 }
 
+template <typename T>
+std::pair<matrix<T>, std::vector<int>> lu_decompose(matrix<T> A) {
+  // https://en.wikipedia.org/wiki/LU_decomposition
+  auto [M, N] = A.shape();
+  std::vector<int> p(N + 1, 1);
+
+  auto LU = A;
+
+  double maxA = 0.0;
+
+  int imax = 0;
+  for (int i = 0; i < N; ++i) {
+    imax = i;
+
+    for (int k = i; k < N; ++k) {
+      if (auto absA = std::abs(LU(k, i)); absA > maxA) {
+        maxA = absA;
+        imax = k;
+      }
+    }
+
+    if (maxA < 0.001) {
+      std::cout << "you get nothing!";
+    }
+
+    if (imax != i) {
+      // Pivot p.
+      std::swap(p[imax], p[i]);
+
+      // Pivot all the rows in A.
+      for (int index = 0; index < N; ++index) {
+        std::swap(LU(imax, index), LU(i, index));
+      }
+
+      // Increment pivot count.
+      ++p[N];
+    }
+
+    for (int j = i + 1; j < N; j++) {
+      LU(j, i) /= LU(i, i);
+      for (int k = i + 1; k < N; k++) {
+        LU(j, k) -= (LU(j, i) * LU(i, k));
+      }
+    }
+  }
+
+  return {LU, p};
+}
+
+template <typename T> T det(matrix<T> mat) {
+  auto [M, N] = mat.shape();
+  auto [lu, p] = lu_decompose(mat);
+  T value = lu(0, 0);
+  for (int i = 1; i < N; i++) {
+    value *= lu(i, i);
+  }
+  return (p[N] - N) % 2 == 0 ? value : -value;
+}
+
 } // namespace yanl

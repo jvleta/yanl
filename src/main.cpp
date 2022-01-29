@@ -16,7 +16,13 @@ int main() {
   std::cout << z << "\n";
 
   auto identity = yanl::eye<double>(5);
-  std::cout << identity << "\n";
+  // std::cout << identity << "\n";
 
-  std::cout << x * y;
+  // std::cout << x * y << "\n";
+
+  auto [lu, p] = yanl::lu_decompose(z);
+
+  std::cout << lu << "\n";
+  double det = yanl::det(z);
+  std::cout << det << "\n";
 }
