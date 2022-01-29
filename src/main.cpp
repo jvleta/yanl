@@ -16,5 +16,7 @@ int main() {
   std::cout << z << "\n";
 
   auto identity = yanl::eye<double>(5);
-  std::cout << identity;
+  std::cout << identity << "\n";
+
+  std::cout << x * y;
 }

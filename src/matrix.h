@@ -62,6 +62,19 @@ public:
     return c;
   }
 
+  friend matrix<T> operator*(matrix<T> &a, matrix<T> &b) {
+    auto [m, n] = a.shape();
+    auto c = matrix<T>(m, n);
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        for (int k = 0; k < n; ++k) {
+          c(i, j) += a(i, k) * b(k, j);
+        }
+      }
+    }
+    return c;
+  }
+
   friend std::ostream &operator<<(std::ostream &os, const matrix<T> &matrix) {
     for (int i = 0; i < matrix.num_rows_; ++i) {
       os << " [ ";
@@ -86,7 +99,7 @@ template <typename T> matrix<T> ones(int num_rows, int num_cols) {
 template <typename T> matrix<T> eye(int num_rows) {
   auto mat = matrix<T>(num_rows, num_rows, 0);
   for (int i = 0; i < num_rows; ++i) {
-    mat(i,i) = 1;
+    mat(i, i) = 1;
   }
   return mat;
 }
