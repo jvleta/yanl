@@ -6,8 +6,6 @@
 #include <ranges>
 #include <vector>
 
-#include "Vector.h"
-
 namespace yanl {
 template <typename T> class matrix {
 private:
@@ -104,63 +102,72 @@ template <typename T> matrix<T> eye(int num_rows) {
   return mat;
 }
 
+struct PermutationResults {
+  int count = 0;
+  std::vector<int> indices;
+  PermutationResults(int size) {
+    for (int i = 0; i < size; ++i) {
+      indices.push_back(i);
+    }
+  }
+};
+
 template <typename T>
-std::pair<matrix<T>, std::vector<int>> lu_decompose(matrix<T> A) {
+std::pair<matrix<T>, PermutationResults> lu_decompose(matrix<T> A) {
   // https://en.wikipedia.org/wiki/LU_decomposition
   auto [M, N] = A.shape();
-  std::vector<int> p(N + 1, 1);
+  PermutationResults permutation{N};
+  auto &p = permutation.indices;
+  p.resize(N, 1);
 
   auto LU = A;
-
-  double maxA = 0.0;
-
-  int imax = 0;
   for (int i = 0; i < N; ++i) {
-    imax = i;
-
-    for (int k = i; k < N; ++k) {
-      if (auto absA = std::abs(LU(k, i)); absA > maxA) {
-        maxA = absA;
-        imax = k;
+    int row_index_of_max_value = i;
+    double max_value_in_column = 0.0;
+    for (int row_index = i; row_index < N; ++row_index) {
+      if (auto value = std::abs(LU(row_index, i));
+          value > max_value_in_column) {
+        max_value_in_column = value;
+        row_index_of_max_value = row_index;
       }
     }
 
-    if (maxA < 0.001) {
+    if (max_value_in_column < 0.001) {
       std::cout << "you get nothing!";
     }
 
-    if (imax != i) {
+    if (row_index_of_max_value != i) {
       // Pivot p.
-      std::swap(p[imax], p[i]);
+      std::swap(p[row_index_of_max_value], p[i]);
 
       // Pivot all the rows in A.
-      for (int index = 0; index < N; ++index) {
-        std::swap(LU(imax, index), LU(i, index));
+      for (int col_index = 0; col_index < N; ++col_index) {
+        std::swap(LU(row_index_of_max_value, col_index), LU(i, col_index));
       }
 
       // Increment pivot count.
-      ++p[N];
+      ++permutation.count;
     }
 
-    for (int j = i + 1; j < N; j++) {
-      LU(j, i) /= LU(i, i);
-      for (int k = i + 1; k < N; k++) {
-        LU(j, k) -= (LU(j, i) * LU(i, k));
+    for (int row_index = i + 1; row_index < N; ++row_index) {
+      LU(row_index, i) /= LU(i, i);
+      for (int col_index = i + 1; col_index < N; ++col_index) {
+        LU(row_index, col_index) -= (LU(row_index, i) * LU(i, col_index));
       }
     }
   }
 
-  return {LU, p};
+  return {LU, permutation};
 }
 
 template <typename T> T det(matrix<T> mat) {
   auto [M, N] = mat.shape();
-  auto [lu, p] = lu_decompose(mat);
+  auto [lu, pr] = lu_decompose(mat);
   T value = lu(0, 0);
   for (int i = 1; i < N; i++) {
     value *= lu(i, i);
   }
-  return (p[N] - N) % 2 == 0 ? value : -value;
+  return pr.count % 2 == 0 ? value : -value;
 }
 
 } // namespace yanl
