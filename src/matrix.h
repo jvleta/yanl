@@ -14,7 +14,18 @@ private:
   int num_cols_ = 0;
   int size_ = 0;
 
+  std::vector<int> skyline_indices_;
+
+  void set_skyline_indices() {
+    for (int i = 0; i < num_rows_; ++i) {
+      for (int j = 0; j < num_cols_; ++j) {
+        skyline_indices_.push_back(num_cols_ * i + j);
+      }
+    }
+  }
+
 public:
+  std::vector<int> get_indices() { return skyline_indices_; }
   std::vector<T> data_;
 
   std::pair<int, int> shape() { return {num_rows_, num_cols_}; }
@@ -26,6 +37,7 @@ public:
     num_rows_ = num_rows;
     num_cols_ = num_cols;
     data_.resize(size_, 0);
+    set_skyline_indices();
   }
 
   matrix(int num_rows, int num_cols, T value) {
@@ -33,9 +45,12 @@ public:
     num_rows_ = num_rows;
     num_cols_ = num_cols;
     data_.resize(size_, value);
+    set_skyline_indices();
   }
 
-  T &operator()(const int row, const int column) { return data_[num_cols_ * row + column]; }
+  T &operator()(const int row, const int column) {
+    return data_[num_cols_ * row + column];
+  }
 
   const T &operator()(const int row, const int column) const {
     return data_[num_cols_ * row + column];
@@ -44,27 +59,30 @@ public:
   friend matrix<T> operator+(matrix<T> &a, matrix<T> &b) {
     auto [m, n] = a.shape();
     auto c = matrix<T>(m, n, 0);
-    for (int i = 0; i < c.size(); ++i) {
-      c.data_[i] = a.data_[i] + b.data_[i];
-    }
+    const auto& indices = c.get_indices();
+    std::for_each(indices.begin(), indices.end(), [&](int index){
+      c.data_[index] = a.data_[index] + b.data_[index];
+    });
     return c;
   }
 
   friend matrix<T> operator-(matrix<T> &a, matrix<T> &b) {
     auto [m, n] = a.shape();
     auto c = matrix<T>(m, n, 0);
-    for (int i = 0; i < c.size(); ++i) {
-      c.data_[i] = a.data_[i] - b.data_[i];
-    }
+    const auto& indices = c.get_indices();
+    std::for_each(c.indices.begin(), indices.end(), [&](int index){
+      c.data_[index] = a.data_[index] - b.data_[index];
+    });
     return c;
   }
 
   friend matrix<T> operator*(matrix<T> &a, matrix<T> &b) {
     auto [m, n] = a.shape();
-    auto c = matrix<T>(m, n);
+    auto [o, p] = b.shape();
+    auto c = matrix<T>(m, p, 0);
     for (int i = 0; i < m; ++i) {
-      for (int j = 0; j < n; ++j) {
-        for (int k = 0; k < n; ++k) {
+      for (int j = 0; j < p; ++j) {
+        for (int k = 0; k < m; ++k) {
           c(i, j) += a(i, k) * b(k, j);
         }
       }

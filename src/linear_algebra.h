@@ -71,4 +71,29 @@ template <typename T> T det(matrix<T> mat) {
   return pr.count % 2 == 0 ? value : -value;
 }
 
+template <typename T> matrix<T> solve(matrix<T> a, matrix<T> b) {
+  auto [arows, acols] = a.shape();
+  int N = arows;
+
+  auto [LU, permutation_data] = lu_decompose(a);
+  const auto &p = permutation_data.indices;
+  auto x = matrix<T>(N, 1);
+
+  for (int i = 0; i < N; ++i) {
+    x(i, 0) = b(p[i], 0);
+    for (int k = 0; k < i; ++k) {
+      x(i, 0) -= LU(i, k) * x(k, 0);
+    }
+  }
+
+  for (int i = N - 1; i >= 0; --i) {
+    for (int k = i + 1; k < N; ++k) {
+      x(i, 0) -= LU(i, k) * x(k, 0);
+    }
+    x(i, 0) /= LU(i, i);
+  }
+
+  return x;
+}
+
 } // namespace yanl::linear_algebra
