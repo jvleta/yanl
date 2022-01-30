@@ -20,9 +20,13 @@ int main() {
 
   // std::cout << x * y << "\n";
 
-  auto [lu, p] = yanl::lu_decompose(z);
+  auto [lu, p] = yanl::linear_algebra::lu_decompose(z);
 
   std::cout << lu << "\n";
-  double det = yanl::det(z);
+  double det = yanl::linear_algebra::det(z);
   std::cout << det << "\n";
+
+  auto random_matrix = yanl::rand<double>(4, 5);
+  std::cout << random_matrix << "\n";
+
 }
