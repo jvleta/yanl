@@ -37,5 +37,8 @@ int main() {
   
   auto prod = A * x;
   std::cout << "A * x =\n" << prod << "\n";
+  
+  auto norm_of_b = yanl::linear_algebra::norm(b); 
+  std::cout << norm_of_b << "\n";
 
 }

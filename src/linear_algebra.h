@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <numeric>
+
 #include "matrix.h"
 
 namespace yanl::linear_algebra {
@@ -94,6 +97,12 @@ template <typename T> matrix<T> solve(matrix<T> a, matrix<T> b) {
   }
 
   return x;
+}
+
+template <typename T> T norm(matrix<T> &mat) {
+  const auto &x = mat.data_;
+  double dotproduct = std::inner_product(x.begin(), x.end(), x.begin(), 0);
+  return std::sqrt(dotproduct);
 }
 
 } // namespace yanl::linear_algebra
