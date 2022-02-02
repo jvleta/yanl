@@ -18,10 +18,6 @@ struct Output {
 Output bisect(std::function<double(double)> func,
               std::pair<double, double> bounds, Options opts) {
   auto [a, b] = bounds;
-
-  int nmax = opts.max_iterations;
-  double tolerance = opts.tolerance;
-
   int n = 0;
   while (n <= opts.max_iterations) {
     double c = 0.5 * (a + b);

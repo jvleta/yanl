@@ -26,19 +26,23 @@ int main() {
   // double det = yanl::linear_algebra::det(z);
   // std::cout << det << "\n";
 
-  auto A = yanl::rand<double>(3, 3);
-  std::cout << "A =\n" << A << "\n";
+  // auto A = yanl::rand<double>(3, 3);
+  // std::cout << "A =\n" << A << "\n";
 
-  auto b = yanl::ones<double>(3, 1);
-  std::cout << "b =\n" << b << "\n";
+  // auto b = yanl::ones<double>(3, 1);
+  // std::cout << "b =\n" << b << "\n";
 
-  auto x = yanl::linear_algebra::solve(A, b);
-  std::cout << "x =\n" << x << "\n";
-  
-  auto prod = A * x;
-  std::cout << "A * x =\n" << prod << "\n";
-  
-  auto norm_of_b = yanl::linear_algebra::norm(b); 
-  std::cout << norm_of_b << "\n";
+  // auto x = yanl::linear_algebra::solve(A, b);
+  // std::cout << "x =\n" << x << "\n";
 
+  // auto prod = A * x;
+  // std::cout << "A * x =\n" << prod << "\n";
+
+  // auto norm_of_b = yanl::linear_algebra::norm(b);
+  // std::cout << norm_of_b << "\n";
+  auto func = [](double x) { return x * x - 1.0; };
+  auto opts = yanl::optimize::Options{};
+  auto [root, iteration_count, converged] =
+      yanl::optimize::bisect(func, {-2.0, 0.0}, opts);
+  std::cout << root;
 }
