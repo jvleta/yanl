@@ -40,9 +40,11 @@ int main() {
 
   // auto norm_of_b = yanl::linear_algebra::norm(b);
   // std::cout << norm_of_b << "\n";
-  auto func = [](double x) { return x * x - 1.0; };
-  auto opts = yanl::optimize::Options{};
-  auto [root, iteration_count, converged] =
-      yanl::optimize::bisect(func, {-2.0, 0.0}, opts);
-  std::cout << root;
+  auto func = [](double x) { return x * x; };
+  // auto opts = yanl::optimize::Options{};
+  // auto [root, iteration_count, converged] =
+  //     yanl::optimize::bisect(func, {-2.0, 0.0}, opts);
+  // std::cout << root;
+  auto area = yanl::integrate::quad<double>(func, 0, 1, 100);
+  std::cout << area;
 }
