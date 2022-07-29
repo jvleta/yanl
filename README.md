@@ -1,3 +1,3 @@
 # YANL - Yet another numeric library
 
-Mostly an academic project to experiment with C++ features and to dust off my linear algebra skills!
+For the most part, this is purely an academic project to experiment with C++ features while dusting off my linear algebra skills.
