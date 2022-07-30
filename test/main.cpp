@@ -2,7 +2,7 @@
 
 #include <yanl/yanl.h>
 
-TEST(Vector_TestZeros, WithDoubles) {
+TEST(matrix_tests, call_zeros_with_doubles) {
   int nrows = 10;
   int ncols = 10;
   int size = nrows * ncols;
@@ -10,40 +10,6 @@ TEST(Vector_TestZeros, WithDoubles) {
   auto y = std::vector<double>(size, 0.0);
   EXPECT_TRUE(x.data_ == y);
 }
-
-// TEST(Vector_TestZeros, WithInts) {
-//   int size = 10;
-//   auto x = yanl::zeros<int>(size);
-//   auto y = std::vector<int>(size, 0.0);
-//   EXPECT_TRUE(x.data_ == y);
-// }
-
-// TEST(Vector_TestOnes, WithDoubles) {
-//   int size = 10;
-//   auto x = yanl::ones<double>(size);
-//   auto y = std::vector<double>(size, 1.0);
-//   EXPECT_TRUE(x.get() == y);
-// }
-
-// TEST(Vector_TestOnes, WithInts) {
-//   int size = 10;
-//   auto x = yanl::ones<int>(size);
-//   auto y = std::vector<int>(size, 1);
-//   EXPECT_TRUE(x.get() == y);
-// }
-
-// TEST(Vector_TestPlusOperator, WithInts) {
-//   int size = 3;
-//   auto x = yanl::ones<int>(size);
-//   x(1) = 2;
-//   x(2) = 3;
-//   auto y = yanl::ones<int>(size);
-//   auto z = x + y;
-
-//   for (int i = 0; i < 3; ++i) {
-//     EXPECT_TRUE(z(i) == i + 2);
-//   }
-// }
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
