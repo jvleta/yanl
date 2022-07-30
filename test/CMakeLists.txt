@@ -1,9 +1,20 @@
-add_executable(test_yanl main.cpp)
-target_link_libraries(test_yanl gtest pthread)
-target_include_directories(test_yanl PUBLIC ${PROJECT_SOURCE_DIR}/src)
+include(FetchContent)
 
-if(MSVC)
-  target_compile_options(test_yanl PRIVATE /W4 /WX)
-else()
-  target_compile_options(test_yanl PRIVATE -Wall -Wextra -Wpedantic -Werror)
-endif()
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.11.0
+)
+FetchContent_MakeAvailable(googletest)
+
+add_library(GTest::GTest INTERFACE IMPORTED)
+target_link_libraries(GTest::GTest INTERFACE gtest_main)
+
+add_executable(matrix_test main.cpp)
+
+target_link_libraries(matrix_test
+ PRIVATE
+  GTest::GTest
+  yanl)
+  
+add_test(yanl_gtests matrix_test)

@@ -1,20 +1,21 @@
 #include <gtest/gtest.h>
 
-#include "yanl.h"
+#include <yanl.h>
 
-// TEST(Vector_TestZeros, WithDoubles) {
-//   int nrows = 10;
-//   int ncols = 10;
-//   auto x = yanl::zeros<double>(nrows, ncols);
-//   auto y = std::vector<double>(size, 0.0);
-//   EXPECT_TRUE(x.get() == y);
-// }
+TEST(Vector_TestZeros, WithDoubles) {
+  int nrows = 10;
+  int ncols = 10;
+  int size = nrows * ncols;
+  auto x = yanl::zeros<double>(nrows, ncols);
+  auto y = std::vector<double>(size, 0.0);
+  EXPECT_TRUE(x.data_ == y);
+}
 
 // TEST(Vector_TestZeros, WithInts) {
 //   int size = 10;
 //   auto x = yanl::zeros<int>(size);
 //   auto y = std::vector<int>(size, 0.0);
-//   EXPECT_TRUE(x.get() == y);
+//   EXPECT_TRUE(x.data_ == y);
 // }
 
 // TEST(Vector_TestOnes, WithDoubles) {
