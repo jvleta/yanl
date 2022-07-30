@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <yanl.h>
+#include <yanl/yanl.h>
 
 TEST(Vector_TestZeros, WithDoubles) {
   int nrows = 10;
