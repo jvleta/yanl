@@ -4,7 +4,6 @@
 #include <memory>
 #include <ostream>
 #include <random>
-#include <ranges>
 #include <vector>
 
 namespace yanl {
