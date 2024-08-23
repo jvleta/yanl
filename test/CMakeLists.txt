@@ -1,20 +1,14 @@
-include(FetchContent)
+find_package(GTest REQUIRED)
 
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.11.0
-)
-FetchContent_MakeAvailable(googletest)
-
-add_library(GTest::GTest INTERFACE IMPORTED)
-target_link_libraries(GTest::GTest INTERFACE gtest_main)
-
+# Create your executable
 add_executable(matrix_test main.cpp)
 
+# Link your executable to GTest
 target_link_libraries(matrix_test
  PRIVATE
-  GTest::GTest
+  GTest::gtest_main
   yanl)
-  
-add_test(yanl_gtests matrix_test)
+
+set_target_properties(matrix_test PROPERTIES CXX_CLANG_TIDY "clang-tidy;-header-filter=.;-checks=readability-*")
+
+add_test(yanl_gtests matrix_test) 
