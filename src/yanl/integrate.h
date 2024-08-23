@@ -9,20 +9,23 @@
 namespace yanl::integrate {
 
 template <typename T>
-T quad(std::function<T(T)> func, T a, T b, int num_panels) {
-  T dx = (b - a) / static_cast<T>(num_panels);
+T quad(std::function<T(T)> func, T left_endpoint, T right_endpoint,
+       int num_panels) {
+  T step_size = (right_endpoint - left_endpoint) / static_cast<T>(num_panels);
 
-  std::vector<T> x(num_panels + 1);
+  std::vector<T> xgrid(num_panels + 1);
   for (int i = 0; i < num_panels + 1; ++i) {
-    x[i] = i * dx + a;
+    xgrid[i] = i * step_size + left_endpoint;
   }
+
+  constexpr double one_half = 0.5;
 
   T sum = 0.0;
   for (int k = 1; k <= num_panels; ++k) {
-    sum += (func(x[k-1]) + func(x[k]));
+    sum += (func(xgrid[k - 1]) + func(xgrid[k]));
   }
 
-  return 0.5 * dx * sum;
+  return one_half * step_size * sum;
 };
 
 } // namespace yanl::integrate
