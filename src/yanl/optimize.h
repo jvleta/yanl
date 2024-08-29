@@ -5,8 +5,10 @@
 
 namespace yanl::optimize {
 struct Options {
-  int max_iterations = 1000;
-  double tolerance = 1e-6;
+  static constexpr int DEFAULT_MAX_ITERATIONS = 1000;
+  static constexpr double DEFAULT_TOLERANCE = 1e-6;
+  int max_iterations = DEFAULT_MAX_ITERATIONS;
+  double tolerance = DEFAULT_TOLERANCE;
 };
 
 struct Output {
@@ -17,18 +19,24 @@ struct Output {
 
 Output bisect(std::function<double(double)> func,
               std::pair<double, double> bounds, Options opts) {
-  auto [a, b] = bounds;
-  int n = 0;
-  while (n <= opts.max_iterations) {
-    double c = 0.5 * (a + b);
-    if (func(c) == 0.0 or 0.5 * (b - a) < opts.tolerance) {
-      return Output{c, n, true};
+  auto [left_endpoint, right_endpoint] = bounds;
+  constexpr double one_half = 0.50;
+  int iteration_count = 0;
+  bool converged = false;
+  while (iteration_count <= opts.max_iterations && !converged) {
+    double midpoint = one_half * (left_endpoint + right_endpoint);
+
+    converged =
+        func(midpoint) == 0.0 || (midpoint - left_endpoint) < opts.tolerance;
+    
+    if (converged) {
+      return Output{midpoint, iteration_count, converged};
     }
-    ++n;
-    if (func(a) * func(c) > 0) {
-      a = c;
+    ++iteration_count;
+    if (func(left_endpoint) * func(midpoint) > 0) {
+      left_endpoint = midpoint;
     } else {
-      b = c;
+      right_endpoint = midpoint;
     }
   }
   return Output{};
