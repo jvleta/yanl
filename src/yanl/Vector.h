@@ -7,16 +7,16 @@
 namespace yanl {
 
 template <typename T> class Vector {
-protected:
+private:
   std::vector<T> data;
   int size_ = 0;
   Vector() = default;
 
 public:
-  Vector(int size, T value) {
-    size_ = size;
+  Vector(int size, T value) : size_(size) {
     data.resize(size, value);
   }
+  
   void set_data(std::vector<T> data) { this->data = data; }
   int size() { return size_; }
   std::vector<T> get() { return data; }
