@@ -55,50 +55,51 @@ public:
     return data_[num_cols_ * row + column];
   }
 
-  friend matrix<T> operator+(matrix<T> &a, matrix<T> &b) {
-    auto [m, n] = a.shape();
-    auto c = matrix<T>(m, n, 0);
-    const auto& indices = c.get_indices();
-    std::for_each(indices.begin(), indices.end(), [&](int index){
-      c.data_[index] = a.data_[index] + b.data_[index];
+  friend matrix<T> operator+(matrix<T> &matrix1, matrix<T> &matrix2) {
+    auto [num_rows, num_cols] = matrix1.shape();
+    auto result = matrix<T>(num_rows, num_cols, 0);
+    const auto &indices = result.get_indices();
+    std::for_each(indices.begin(), indices.end(), [&](int index) {
+      result.data_[index] = matrix1.data_[index] + matrix2.data_[index];
     });
-    return c;
+    return result;
   }
 
-  friend matrix<T> operator-(matrix<T> &a, matrix<T> &b) {
-    auto [m, n] = a.shape();
-    auto c = matrix<T>(m, n, 0);
-    const auto& indices = c.get_indices();
-    std::for_each(c.indices.begin(), indices.end(), [&](int index){
-      c.data_[index] = a.data_[index] - b.data_[index];
+  friend matrix<T> operator-(matrix<T> &matrix1, matrix<T> &matrix2) {
+    auto [num_rows, num_cols] = matrix1.shape();
+    auto result = matrix<T>(num_rows, num_cols, 0);
+    const auto &indices = result.get_indices();
+    std::for_each(indices.begin(), indices.end(), [&](int index) {
+      result.data_[index] = matrix1.data_[index] - matrix2.data_[index];
     });
-    return c;
+    return result;
   }
 
-  friend matrix<T> operator*(matrix<T> &a, matrix<T> &b) {
-    auto [m, n] = a.shape();
-    auto [o, p] = b.shape();
-    auto c = matrix<T>(m, p, 0);
-    for (int i = 0; i < m; ++i) {
-      for (int j = 0; j < p; ++j) {
-        for (int k = 0; k < m; ++k) {
-          c(i, j) += a(i, k) * b(k, j);
+  friend matrix<T> operator*(matrix<T> &matrix1, matrix<T> &matrix2) {
+    auto [matrix1_rows, matrix1_cols] = matrix1.shape();
+    auto [matrix2_rows, matrix2_cols] = matrix2.shape();
+    auto result = matrix<T>(matrix1_rows, matrix2_cols, 0);
+    for (int i = 0; i < matrix1_rows; ++i) {
+      for (int j = 0; j < matrix2_cols; ++j) {
+        for (int k = 0; k < matrix1_rows; ++k) {
+          result(i, j) += matrix1(i, k) * matrix2(k, j);
         }
       }
     }
-    return c;
+    return result;
   }
 
-  friend std::ostream &operator<<(std::ostream &os, const matrix<T> &matrix) {
-    for (int i = 0; i < matrix.num_rows_; ++i) {
-      os << " [ ";
-      for (int j = 0; j < matrix.num_cols_; ++j) {
-        os << matrix(i, j);
-        os << " ";
+  friend std::ostream &operator<<(std::ostream &out_stream,
+                                  const matrix<T> &matrix_in) {
+    for (int i = 0; i < matrix_in.num_rows_; ++i) {
+      out_stream << " [ ";
+      for (int j = 0; j < matrix_in.num_cols_; ++j) {
+        out_stream << matrix_in(i, j);
+        out_stream << " ";
       }
-      os << "]\n";
+      out_stream << "]\n";
     }
-    return os;
+    return out_stream;
   }
 };
 
@@ -119,8 +120,8 @@ template <typename T> matrix<T> eye(int num_rows) {
 }
 
 template <typename T> matrix<T> rand(int num_rows, int num_cols) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
+  std::random_device rand;
+  std::mt19937 gen(rand());
   std::uniform_real_distribution<T> dist(0, 1);
   auto mat = matrix<T>(num_rows, num_cols);
   for (int i = 0; i < num_rows; ++i) {
