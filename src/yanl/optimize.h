@@ -16,6 +16,9 @@ struct Output {
 };
 
 Output bisect(std::function<double(double)> func,
+              std::pair<double, double> bounds, Options opts);
+              
+Output bisect(std::function<double(double)> func,
               std::pair<double, double> bounds, Options opts) {
   auto [a, b] = bounds;
   int n = 0;

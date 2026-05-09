@@ -4,11 +4,15 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src",
+                "/opt/homebrew/opt/googletest/include",
+                "/Users/jimmy/Documents/GitHub/yanl/build/_deps/googletest-src/googletest/include",
+                "/Users/jimmy/Documents/GitHub/yanl/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "clang-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

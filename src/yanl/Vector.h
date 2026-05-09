@@ -17,7 +17,7 @@ public:
     size_ = size;
     data.resize(size, value);
   }
-  void set_data(std::vector<T> data) { this->data = data; }
+  void set_data(std::vector<T> data_in) { this->data = data_in; }
   int size() { return size_; }
   const std::vector<T> get() { return data; }
 
