@@ -43,6 +43,27 @@ BisectionMethodResult bisect(std::function<double(double)> func, double a,
 
   return {-1.0, max_num_iterations, false};
 }
+
+namespace yanl::derivative {
+  
+    double fp_fd(std::function<double(double)> func, double x, double h) {
+	  return (func(x + h) - func(x)) / h;
+	}
+
+    double fp_cd(std::function<double(double)> func, double x, double h) {
+	  return (func(x + h) - func(x - h)) / (2.0 * h);
+	}
+  
+	double fp_bd(std::function<double(double)> func, double x, double h) {
+	  return (func(x) - func(x - h)) / h;
+	}
+
+	double fpp_121(std::function<double(double)> func, double x, double h) {
+	  return (func(x + h) - 2.0 * func(x) + func(x - h)) / std::pow(h, 2.0);
+	}
+
+};
+
 }; // namespace yanl::optimization
 
 TEST(BisectionMethodTest, ParabolicFunction) {
@@ -55,7 +76,7 @@ TEST(BisectionMethodTest, ParabolicFunction) {
 
 TEST(BisectionMethodTest, TrigFunction) {
   const auto func = [](double x) { return std::sin(x); };
-  auto r = yanl::root_finders::bisect(func, 3.1, 3.2);
+  auto r = yanl::optimization::bisect(func, 3.1, 3.2);
   EXPECT_NE(r.root, 1.0);
   EXPECT_EQ(r.converged, true);
   EXPECT_EQ(r.num_iterations, 17);
