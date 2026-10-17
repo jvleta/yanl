@@ -1,0 +1,26 @@
+---
+Checks: '
+  -*,
+  bugprone-*,
+  cppcoreguidelines-*,
+'
+WarningsAsErrors: ''
+HeaderFileExtensions:
+  - ''
+  - h
+  - hh
+  - hpp
+  - hxx
+ImplementationFileExtensions:
+  - c
+  - cc
+  - cpp
+  - cxx
+HeaderFilterRegex: '^(src|include)/.*'
+ExcludeHeaderFilterRegex: ''
+FormatStyle:     none
+User:            jimmy
+CheckOptions:    {}
+SystemHeaders:   false
+...
+
