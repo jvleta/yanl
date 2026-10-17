@@ -1,8 +1,7 @@
 #include "optimization.h"
+#include "constants.h"
 
 #include <cmath>
-
-constexpr double kTwo = 2.0;
 
 namespace yanl::optimization {
 

@@ -1,11 +1,7 @@
-#include "optimization.h"
+#include "yanl.h"
 
 #include <cmath>
 #include <gtest/gtest.h>
-
-constexpr double kOne = 1.0;
-constexpr double kFive = 5.0;
-constexpr double kZero = 0.0;
 
 TEST(BisectionMethodTest, ParabolicFunction) {
   const auto func = [](double x) { return x * x - kOne; };
