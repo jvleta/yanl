@@ -3,8 +3,12 @@ Checks: '
   -*,
   bugprone-*,
   cppcoreguidelines-*,
+  modernize-*,
+  readability-*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
 '
-WarningsAsErrors: ''
+WarningsAsErrors: '*'
 HeaderFileExtensions:
   - ''
   - h

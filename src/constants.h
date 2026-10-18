@@ -7,4 +7,3 @@ constexpr double kThree = 3.0;
 constexpr double kFour = 4.0;
 constexpr double kFive = 5.0;
 constexpr double kOneHalf = kOne / kTwo;
-

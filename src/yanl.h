@@ -1,5 +1,4 @@
 #pragma once
 
-#include "optimization.h"
 #include "constants.h"
-
+#include "optimization.h"
