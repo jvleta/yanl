@@ -24,7 +24,21 @@ HeaderFilterRegex: '^(src|include)/.*'
 ExcludeHeaderFilterRegex: ''
 FormatStyle:     none
 User:            jimmy
-CheckOptions:    {}
+CheckOptions:
+  - key:   readability-magic-numbers.IgnoredIntegerValues
+    value: '0;1;2;3;4;10;100;'
+  - key:   readability-magic-numbers.IgnoredFloatingPointValues
+    value: '0.0;1.0;2.0;3.0;4.0;5.0;0.5;'
+  - key:   cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
+    value: '0;1;2;3;4;10;100;'
+  - key:   cppcoreguidelines-avoid-magic-numbers.IgnoredFloatingPointValues
+    value: '0.0;1.0;2.0;3.0;4.0;5.0;0.5;'
+  - key:   readability-identifier-length.IgnoredVariableNames
+    value: '^[i-m|x-z|a-c|f]$'
+  - key:   readability-identifier-length.MinimumVariableNameLength
+    value: '2'
+  - key:   readability-identifier-length.MinimumParameterNameLength
+    value: '1'
 SystemHeaders:   false
 ...
 

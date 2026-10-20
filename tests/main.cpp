@@ -4,23 +4,21 @@
 
 #include "yanl.h"
 
-// NOLINTBEGIN(readability-identifier-length)
 TEST(BisectionMethodTest, ParabolicFunction) {
-  auto func = [](double x) -> double { return std::pow(x, kTwo) - kOne; };
-  auto r = yanl::optimization::bisect(func, kZero, kFive);
-  EXPECT_NE(r.root, kOne);
-  EXPECT_EQ(r.converged, true);
+  auto func = [](double x) -> double { return std::pow(x, 2.0) - 1.0; };
+  auto result = yanl::optimization::bisect(func, 0.0, 5.0);
+  EXPECT_NE(result.root, 1.0);
+  EXPECT_EQ(result.converged, true);
 }
 
 TEST(BisectionMethodTest, TrigFunction) {
   auto func = [](double x) -> double { return std::sin(x); };
   const double a = 3.1;
   const double b = 3.2;
-  auto r = yanl::optimization::bisect(func, a, b);
-  EXPECT_NE(r.root, kOne);
-  EXPECT_EQ(r.converged, true);
+  auto result = yanl::optimization::bisect(func, a, b);
+  EXPECT_NE(result.root, 1.0);
+  EXPECT_EQ(result.converged, true);
 }
-// NOLINTEND(readability-identifier-length)
 
 auto main(int argc, char** argv) -> int {
   ::testing::InitGoogleTest(&argc, argv);

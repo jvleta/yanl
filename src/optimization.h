@@ -10,7 +10,7 @@ struct BisectionMethodResult {
   bool converged = false;
 };
 
-BisectionMethodResult bisect(std::function<double(double)> func,
-                             double lower_bound, double upper_bound);
+BisectionMethodResult bisect(std::function<double(double)> func, double a,
+                             double b);
 
 };  // namespace yanl::optimization
