@@ -6,11 +6,10 @@
 
 namespace yanl::optimization {
 
-auto bisect(std::function<double(double)> func, double a, double b)
-    -> BisectionMethodResult {
+auto bisect(std::function<double(double)> func, double a, double b,
+            std::optional<double> xtol) -> BisectionMethodResult {
   BisectionMethodResult result{};
 
-  constexpr double kTolerance = 1e-6;
   const int max_num_iterations = 1000;
 
   if (func(a) * func(b) >= 0) {
@@ -21,9 +20,10 @@ auto bisect(std::function<double(double)> func, double a, double b)
     double c = 0.5 * (a + b);
     double f_at_c = func(c);
 
-    if ((b - a) <= kTolerance) {
+    if ((b - a) <= xtol) {
       return {
           .root = c,
+					.residual = std::abs(b - a),
           .num_iterations = i,
           .converged = true,
       };
@@ -40,7 +40,6 @@ auto bisect(std::function<double(double)> func, double a, double b)
   }
 
   return {
-      .root = -std::numeric_limits<double>::max(),
       .num_iterations = max_num_iterations,
       .converged = false,
   };
