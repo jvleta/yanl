@@ -43,7 +43,6 @@ TEST(BisectionMethodTests, EquationOfState) {
   constexpr double max_vol = 1.0;
 	const double xtol = 1e-11;
   auto result = yanl::bisection(func, 0, max_vol, xtol);
-  std::cout << result.root << "\n";
 	EXPECT_LT(result.residual, xtol);
 }
 
