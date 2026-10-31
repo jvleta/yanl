@@ -6,7 +6,7 @@
 
 TEST(BisectionMethodTests, ParabolicFunction) {
   auto func = [](double x) -> double { return std::pow(x, 2.0) - 1.0; };
-  auto result = yanl::optimization::bisect(func, 0.0, 5.0);
+  auto result = yanl::bisection(func, 0.0, 5.0);
   EXPECT_NE(result.root, 1.0);
   EXPECT_EQ(result.converged, true);
 }
@@ -15,7 +15,7 @@ TEST(BisectionMethodTests, TrigFunction) {
   auto func = [](double x) -> double { return std::sin(x); };
   const double a = 3.1;
   const double b = 3.2;
-  auto result = yanl::optimization::bisect(func, a, b);
+  auto result = yanl::bisection(func, a, b);
   EXPECT_NE(result.root, 1.0);
   EXPECT_EQ(result.converged, true);
 }
@@ -42,7 +42,7 @@ TEST(BisectionMethodTests, EquationOfState) {
   };
   constexpr double max_vol = 1.0;
 	const double xtol = 1e-11;
-  auto result = yanl::optimization::bisect(func, 0, max_vol, xtol);
+  auto result = yanl::bisection(func, 0, max_vol, xtol);
   std::cout << result.root << "\n";
 	EXPECT_LT(result.residual, xtol);
 }

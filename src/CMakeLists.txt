@@ -1,7 +1,7 @@
-add_library(yanl optimization.cpp)
+add_library(yanl bisection.cpp)
 
 if(EMSCRIPTEN)
-  add_executable(yanl_wasm bindings.cpp)
+  add_executable(yanl_wasm bisection.bindings.cpp)
 	target_link_libraries(yanl_wasm PRIVATE yanl)
 	target_link_options(yanl_wasm PRIVATE
 	  "-lembind"

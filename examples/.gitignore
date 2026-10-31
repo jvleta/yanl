@@ -1,0 +1,6 @@
+*.a
+*.wasm
+.vite/*
+yanl_wasm.js
+libyanl_wasm.js
+

@@ -1,13 +1,13 @@
-#include "optimization.h"
+#include "bisection.h"
 
 #include <cmath>
 #include <functional>
 #include <limits>
 
-namespace yanl::optimization {
+namespace yanl {
 
-auto bisect(std::function<double(double)> func, double a, double b,
-            std::optional<double> xtol) -> BisectionMethodResult {
+auto bisection(std::function<double(double)> func, double a, double b,
+               std::optional<double> xtol) -> BisectionMethodResult {
   BisectionMethodResult result{};
 
   const int max_num_iterations = 1000;
@@ -23,7 +23,7 @@ auto bisect(std::function<double(double)> func, double a, double b,
     if ((b - a) <= xtol) {
       return {
           .root = c,
-					.residual = std::abs(b - a),
+          .residual = std::abs(b - a),
           .num_iterations = i,
           .converged = true,
       };
@@ -45,4 +45,4 @@ auto bisect(std::function<double(double)> func, double a, double b,
   };
 }
 
-};  // namespace yanl::optimization
+};  // namespace yanl
